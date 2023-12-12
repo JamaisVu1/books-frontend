@@ -16,8 +16,6 @@ let server = import.meta.env.VITE_SERVER;
 function BestBooks() {
   const [books, setbooks] = useState([]);
 
-  App.get();
-
   async function getBooks() {
     try {
       let response = await axios.get(`${server}/books`);
