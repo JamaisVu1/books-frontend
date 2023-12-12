@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import App from "./App";
 import Carousel from "react-bootstrap/Carousel";
+import ExampleCarouselImage from './images/can-of-books-fr.jpg';
+
 
 let server = import.meta.env.VITE_SERVER;
 
@@ -18,32 +20,31 @@ function BestBooks() {
 
   async function getBooks() {
     try {
-      let response = await axios.get(`${server}/books`);
+      let response = await axios.get(`${server}books`);
       setbooks(response.data);
       console.log(response.data);
     } catch (e) {
       console.error(e.message);
     }
   }
-    console.log(books);
-  if (books.length > 0) {
-    return (
-      <>
-        <h2>Zach and Brendans Book Banjoriee</h2>
-        <button onClick={getBooks}></button>
-        <Carousel>
-          <Carousel.Caption>
-            <h3>books.title</h3>
-            <p>books.description</p>
-          </Carousel.Caption>
-        </Carousel>
-      </>
-    );
-  } else {
-    return <p>No books here</p>;
-  }
+  console.log(books);
+
+  return (
+   <>
+  <h2>Zach and Brendans Book Banjoriee</h2>
+  <button onClick={getBooks}>Get books</button>
+  {books.length > 0 && (
+    <ul>
+      {books.map((book) => (
+        <li key={book._id}>
+          <h3>{book.title}</h3>
+          <p>{book.description}</p>
+        </li>
+      ))}
+    </ul>
+  )}
+</>
+  );
 }
-
-
 
 export default BestBooks;
