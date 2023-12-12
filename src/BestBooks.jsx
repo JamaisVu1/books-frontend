@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import App from './App';
+import React, { useState } from "react";
+import axios from "axios";
+import App from "./App";
+import Carousel from "react-bootstrap/Carousel";
 
 let server = import.meta.env.VITE_SERVER;
-
 
 // class BestBooks extends React.Component {
 //   constructor(props) {
@@ -13,36 +13,37 @@ let server = import.meta.env.VITE_SERVER;
 //     }
 //   }
 
-
-
-
-
-
 function BestBooks() {
   const [books, setbooks] = useState([]);
 
-  App.get()
+  App.get();
 
   async function getBooks() {
     try {
-      let response = await axios.get(`${server}/books`)
+      let response = await axios.get(`${server}/books`);
       setbooks(response.data);
-    } catch (e) { console.error(e.message); }
+    } catch (e) {
+      console.error(e.message);
+    }
   }
 
-  return (
-    <>
-      <h2>My Essential Lifelong Learning &amp; Formation Shelf</h2>
-
-      {this.state.books.length ? (
-        <p>Book Carousel coming soon</p>
-      ) : (
-        <h3>No Books Found :</h3>
-      )}
-    </>
-  )
+  if (books.length > 0) {
+    return (
+      <>
+        <h2>Zach and Brendans Book Banjoriee</h2>
+        <Carousel>
+          <Carousel.Caption>
+            <h3>books.title</h3>
+            <p>books.description</p>
+          </Carousel.Caption>
+        </Carousel>
+      </>
+    );
+  } else {
+    return <p>No books here</p>;
+  }
 }
 
-/* TODO: render all the books in a Carousel */
+
 
 export default BestBooks;
