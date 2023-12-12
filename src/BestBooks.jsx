@@ -26,11 +26,12 @@ function BestBooks() {
       console.error(e.message);
     }
   }
-
+ 
   if (books.length > 0) {
     return (
       <>
         <h2>Zach and Brendans Book Banjoriee</h2>
+        <button onClick={getBooks}></button>
         <Carousel>
           <Carousel.Caption>
             <h3>books.title</h3>
