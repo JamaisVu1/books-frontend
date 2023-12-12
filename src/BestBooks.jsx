@@ -24,7 +24,7 @@ function BestBooks() {
       console.error(e.message);
     }
   }
- 
+    console.log(books);
   if (books.length > 0) {
     return (
       <>
