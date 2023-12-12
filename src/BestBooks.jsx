@@ -20,6 +20,7 @@ function BestBooks() {
     try {
       let response = await axios.get(`${server}/books`);
       setbooks(response.data);
+      console.log(response.data);
     } catch (e) {
       console.error(e.message);
     }
