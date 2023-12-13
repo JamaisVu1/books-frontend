@@ -22,7 +22,7 @@ function BestBooks(props) {
     let book = { title, author, description, status };
     console.log("Sending Book to server", book);
     try {
-      let response = await axios.post(`${SERVER}/books`, book);
+      let response = await axios.post(`${SERVER}books`, book);
       console.log("Server Response", response);
       setBooks([...books, response.data]);
     } catch (e) {
@@ -32,7 +32,7 @@ function BestBooks(props) {
 
   async function getBooks() {
     try {
-      let response = await axios.get(`${SERVER}/books`);
+      let response = await axios.get(`${SERVER}books`);
       setBooks(response.data);
       // console.log(response.data);
     } catch (e) {
@@ -43,7 +43,7 @@ function BestBooks(props) {
 
   const handleDelete = async (e) => {
     console.log("Delete", e.target.id);
-    let response = await axios.delete(`${SERVER}/books/${e.target.id}`);
+    let response = await axios.delete(`${SERVER}books/${e.target.id}`);
     console.log(response);
     // let books2 = response.data; // {}
     let newBooks = books.filter((book) => {
