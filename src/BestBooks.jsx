@@ -4,12 +4,11 @@ import App from "./App";
 import Carousel from "react-bootstrap/Carousel";
 import { CarouselItem } from "react-bootstrap";
 import BookFormModal from "./Modal";
+import BookUpdateModal from "./updateModal";
 // import cors from "cors";
 // App.use(cors());
 
 let SERVER = import.meta.env.VITE_SERVER;
-
-
 
 function BestBooks(props) {
   useEffect(() => {
@@ -18,8 +17,8 @@ function BestBooks(props) {
   const [books, setBooks] = useState([]);
   const [userBooks, setUserBooks] = useState({});
 
-  const handleSubmit = async (title, author, description, status) => {
-    let book = { title, author, description, status };
+  const handleSubmit = async (id, title, author, description, status) => {
+    let book = { id, title, author, description, status };
     console.log("Sending Book to server", book);
     try {
       let response = await axios.post(`${SERVER}books`, book);
@@ -65,8 +64,8 @@ function BestBooks(props) {
                 width="100%"
               />
               <Carousel.Caption>
-                <p style = {{color : "#111"}}>{book.author}</p>
-                <p style = {{color : "#111"}}>{book.description}</p>
+                <p style={{ color: "#111" }}>{book.author}</p>
+                <p style={{ color: "#111" }}>{book.description}</p>
                 <span
                   id={book._id}
                   onClick={handleDelete}
@@ -78,11 +77,14 @@ function BestBooks(props) {
                 >
                   Delete
                 </span>
+                <BookUpdateModal handleSubmit={handleSubmit} id= {book._id}/>
               </Carousel.Caption>
             </Carousel.Item>
           ))}
         </Carousel>
-      ): <h2>Books not found</h2>}
+      ) : (
+        <h2>Books not found</h2>
+      )}
       <BookFormModal handleSubmit={handleSubmit} />
     </>
   );
