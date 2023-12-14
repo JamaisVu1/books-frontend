@@ -15,10 +15,10 @@ function BestBooks(props) {
     getBooks();
   }, []);
   const [books, setBooks] = useState([]);
-  const [userBooks, setUserBooks] = useState({});
+  const [selectedBook, setSelectedBook] = useState(null);
 
-  const handleSubmit = async (id, title, author, description, status) => {
-    let book = { id, title, author, description, status };
+  const handleSubmit = async (title, author, description, status) => {
+    let book = { title, author, description, status };
     console.log("Sending Book to server", book);
     try {
       let response = await axios.post(`${SERVER}books`, book);
@@ -29,6 +29,22 @@ function BestBooks(props) {
     }
   };
 
+  const selectBook = (book) => {
+    setSelectedBook(book);
+    console.log(selectedBook);
+  }
+
+  async function handleUpdate(updatedBook){
+    let response = await axios.put(`${SERVER}books/${updatedBook._id}`, updatedBook)
+   
+    let newBooks = books.map(book => {
+      if(book._id === updatedBook._id){return updatedBook; }
+      else {return book;}
+});
+    setBooks(newBooks);
+  }
+
+ 
   async function getBooks() {
     try {
       let response = await axios.get(`${SERVER}books`);
@@ -50,7 +66,7 @@ function BestBooks(props) {
     });
     console.log(newBooks);
     setBooks(newBooks);
-  };
+  }; 
   return (
     <>
       <h2>Zach and Brendans Bibliotheca </h2>
@@ -77,7 +93,7 @@ function BestBooks(props) {
                 >
                   Delete
                 </span>
-                <BookUpdateModal handleSubmit={handleSubmit} id= {book._id}/>
+                <BookUpdateModal handleUpdate={handleUpdate} selectedBook={selectedBook} userSelect= {selectBook}  book= {book}/>
               </Carousel.Caption>
             </Carousel.Item>
           ))}
@@ -87,7 +103,7 @@ function BestBooks(props) {
       )}
       <BookFormModal handleSubmit={handleSubmit} />
     </>
-  );
+  );  
 }
 
 export default BestBooks;

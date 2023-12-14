@@ -1,28 +1,33 @@
-import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import { useState, useEffect } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 function BookUpdateModal(props) {
-  const [show, setShow] = useState(false);
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("");
   const [update, setUpdate] = useState({});
-  
+  const [show, setShow] = useState(false);
+
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {setShow(true)
+    props.userSelect(props.book)
+};
 
   const handleChange = (e) => {
-      let name = e.target.name;
-      let value = e.target.value;
-            
-      if( name === "title" ) { setTitle(value); }
-      if( name === "description" ) { setDescription(value); }
-      if( name === "author" ) { setAuthor(value); }
-      if( name === "status" ) { setStatus(value); }
-    }
-  
+    
+
+    setUpdate({ ...update, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props.handleUpdate(update);
+   
+    console.log(update);
+  };
+
+  useEffect(() => {
+    setUpdate(props.selectedBook || {});
+  }, [props.selectedBook]);
+// console.log(props.id);
   return (
     <>
       <Button variant="secondary" onClick={handleShow}>
@@ -34,20 +39,27 @@ function BookUpdateModal(props) {
           <Modal.Title>Add A Book</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-
-            <form>
-                <input id="Title" placeholder ="Title" name = "title" onChange={handleChange}  /> 
-                <input placeholder="Author" name = "author" onChange={handleChange} /> 
-                <input placeholder="Description" name = "description" onChange={handleChange}  /> 
-                <input placeholder="Status" name = "status" onChange={handleChange} /> 
-            </form>
-
+          <form>
+            <input
+              id="Title"
+              placeholder="Title"
+              name="title"
+              onChange={handleChange}
+            />
+            <input placeholder="Author" name="author" onChange={handleChange} />
+            <input
+              placeholder="Description"
+              name="description"
+              onChange={handleChange}
+            />
+            <input placeholder="Status" name="status" onChange={handleChange} />
+          </form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="secondary" onClick={ () => props.handleSubmit(props.id, title, author, description, status)}>
+          <Button variant="secondary" onClick={handleSubmit}>
             Save Changes
           </Button>
         </Modal.Footer>
